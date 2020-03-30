@@ -53,7 +53,7 @@ psrn_noisy_last = 0
 i=0
 
 def main():
-    global net_input, net_input_saved, noise, img_noisy_torch, img_noisy_np, img_np, NumPix
+    global net_input, net_input_saved, noise, img_noisy_torch, img_noisy_np, img_np, NumPix, num_iter
     parser = argparse.ArgumentParser(description='DIP')
     parser.add_argument('--fname', type=str, default='F16_GT.png', help='fname')
     parser.add_argument('--show_every', type=int, default=100, help='show_every')
