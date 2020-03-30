@@ -26,7 +26,7 @@ OPTIMIZER='adam' # 'LBFGS'
 imsize =-1
 sigma = 25
 sigma_ = sigma/255.
-num_iter = 5000
+
 input_depth = 32 
 figsize = 4
 current_time = time.strftime("%Y-%m-%dT%H:%M", time.localtime())
@@ -63,12 +63,14 @@ def main():
     parser.add_argument('--cudanum', type=str, default='3', help='which GPU run')
     parser.add_argument('--tv_weight', type=float, default=1e-1, help='tv_loss weight')
     parser.add_argument('--pl_weight', type=float, default=1e0, help='pl_loss weight')
+    parser.add_argument('--num_iter', type=int, default=5000, help='item number')
+    
     # parser.add_argument('--devices', type=str, default='3', help='CUDA used')
     args = parser.parse_args()
     args = vars(args)
     args = {k: v for k, v in args.items() if v is not None}
     
-    
+    num_iter = arg['num_iter']
     
     img_pil = crop_image(get_image('data/denoising/'+args['fname'], imsize)[0], d=32)
     img_np = pil_to_np(img_pil)
