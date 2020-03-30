@@ -131,7 +131,7 @@ class DIP:
         elif LOSS == 'avg_mse_tv':
             pn = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
             LOSS_write = 'avg_mse_tv'
-            total_loss = (1-pn/25)mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
+            total_loss = (1-pn/25)*mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
         elif LOSS == 'ssim+tv':
             LOSS_write = 'ssim+'+str(tv_weight)+'tv'
             total_loss = ssim(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
