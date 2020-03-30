@@ -70,7 +70,7 @@ def main():
     args = vars(args)
     args = {k: v for k, v in args.items() if v is not None}
     
-    num_iter = arg['num_iter']
+    num_iter = args['num_iter']
     
     img_pil = crop_image(get_image('data/denoising/'+args['fname'], imsize)[0], d=32)
     img_np = pil_to_np(img_pil)
