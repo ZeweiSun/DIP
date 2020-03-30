@@ -63,7 +63,7 @@ def main():
     parser.add_argument('--cudanum', type=str, default='3', help='which GPU run')
     parser.add_argument('--tv_weight', type=float, default=1e-1, help='tv_loss weight')
     parser.add_argument('--pl_weight', type=float, default=1e0, help='pl_loss weight')
-    parser.add_argument('--num_iter', type=int, default=5000, help='item number')
+    parser.add_argument('--num_iter', type=float, default=5000, help='item number')
     
     # parser.add_argument('--devices', type=str, default='3', help='CUDA used')
     args = parser.parse_args()
