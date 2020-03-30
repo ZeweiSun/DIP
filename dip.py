@@ -130,7 +130,8 @@ class DIP:
             total_loss = mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
         elif LOSS == 'avg_mse_tv':
             pn = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
-            alpha = torch.log(1000*mse(out, img_noisy_torch)).detach().cpu().numpy()[0]
+            alpha_tensor = torch.log(1000)+torch.log(mse(out, img_noisy_torch))
+            alpha = alpha_tensor.detach().cpu().numpy()[0]
             LOSS_write = 'avg_mse_'+str(tv_weight)+'tv'
             total_loss = (1-pn/30)*alpha*mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
         elif LOSS == 'ssim+tv':
