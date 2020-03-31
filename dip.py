@@ -3,6 +3,7 @@ from __future__ import print_function
 import matplotlib.pyplot as plt
 from tensorboardX import SummaryWriter
 import time
+import math
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 import argparse
@@ -132,7 +133,7 @@ class DIP:
             pn_np = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
             global pn, alpha
             pn = (1-pn_np/25)
-            alpha_tensor = torch.log(mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(0.1*tv(out.detach())/NumPix).type(torch.FloatTensor))
+            alpha_tensor = torch.log(mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(0.1*math.log(math.sqrt(i),10)*tv(out.detach())/NumPix).type(torch.FloatTensor))
             alpha = alpha_tensor.detach().cpu().numpy()[0]
             alpha = max(alpha,1-pn)
             LOSS_write = 'avg_mse_'+str(tv_weight)+'tv'
