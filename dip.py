@@ -135,7 +135,7 @@ class DIP:
             alpha = alpha_tensor.detach().cpu().numpy()[0]
             alpha = max(alpha,1-pn)
             if i > 2000:
-                alpha = alpha*0.1
+                alpha = alpha*5
             LOSS_write = 'avg_mse_'+str(tv_weight)+'tv'
             total_loss = pn*alpha*mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
         elif LOSS == 'ssim+tv':
