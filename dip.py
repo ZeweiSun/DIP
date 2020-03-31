@@ -132,7 +132,7 @@ class DIP:
             pn_np = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
             global pn, alpha
             pn = (1-pn_np/30)
-            alpha_tensor = torch.log(torch.tensor([1.0])+mse(out, img_noisy_torch).type(torch.FloatTensor)/(tv_weight*tv(out)/NumPix))
+            alpha_tensor = torch.log(torch.tensor([1.0])+mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(tv_weight*tv(out.detach())/NumPix).type(torch.FloatTensor))
             alpha = alpha_tensor.detach().cpu().numpy()[0]
             alpha = max(alpha,1-pn)
             LOSS_write = 'avg_mse_'+str(tv_weight)+'tv'
