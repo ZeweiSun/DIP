@@ -134,8 +134,7 @@ class DIP:
             alpha_tensor = torch.log(torch.tensor([1000.0]))+torch.log(mse(out, img_noisy_torch))
             alpha = alpha_tensor.detach().cpu().numpy()[0]
             alpha = max(alpha,1-pn)
-            if i > 2000:
-                alpha = alpha*5
+            print ('Iteration %05d    pn %f   alpha: %f' % (i, pn, alpha), '\r', end='')
             LOSS_write = 'avg_mse_'+str(tv_weight)+'tv'
             total_loss = pn*alpha*mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
         elif LOSS == 'ssim+tv':
