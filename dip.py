@@ -54,7 +54,7 @@ psrn_noisy_last = 0
 i=0
 
 def main():
-    global net_input, net_input_saved, noise, img_noisy_torch, img_noisy_np, img_np, NumPix, num_iter
+    global net_input, net_input_saved, noise, img_noisy_torch, img_noisy_np, img_np, NumPix, num_iter, M
     parser = argparse.ArgumentParser(description='DIP')
     parser.add_argument('--fname', type=str, default='F16_GT.png', help='fname')
     parser.add_argument('--show_every', type=int, default=100, help='show_every')
@@ -65,6 +65,7 @@ def main():
     parser.add_argument('--tv_weight', type=float, default=1e-1, help='tv_loss weight')
     parser.add_argument('--pl_weight', type=float, default=1e0, help='pl_loss weight')
     parser.add_argument('--num_iter', type=int, default=5000, help='item number')
+    parser.add_argument('--M', type=int, default=30, help='weight of pn')
     
     # parser.add_argument('--devices', type=str, default='3', help='CUDA used')
     args = parser.parse_args()
@@ -132,12 +133,12 @@ class DIP:
         elif LOSS == 'avg_mse_tv':
             pn_np = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
             global pn, alpha, beta
-            pn = (1-pn_np/30)
+            pn = (1-pn_np/M)
             alpha_tensor = torch.log(mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(0.1*tv(out.detach())/NumPix).type(torch.FloatTensor))
             alpha = alpha_tensor.detach().cpu().numpy()[0]
             beta = math.log(max(3000.0-i,100.0), 3000.0)
             #alpha = max(alpha,1-pn)
-            LOSS_write = 'avg_mse_'+str(tv_weight)+'tv'
+            LOSS_write = 'avg_mse_tv'+'M='+str(M)
             total_loss = pn*alpha*beta*mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
         elif LOSS == 'ssim+tv':
             LOSS_write = 'ssim+'+str(tv_weight)+'tv'
