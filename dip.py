@@ -137,7 +137,7 @@ class DIP:
             pn = (1-pn_np/M)
             alpha_tensor = torch.log(mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(0.1*tv(out.detach())/NumPix).type(torch.FloatTensor))
             alpha = alpha_tensor.detach().cpu().numpy()[0]
-            beta = math.log(max(3000.0-i,5.0), 3000.0)
+            beta = math.log(max(3000.0-i,10.0), 3000.0)
             #alpha = max(alpha,1-pn)
             LOSS_write = 'avg_mse_tv'+'M='+str(M)
             total_loss = pn*alpha*beta*mse(out, img_noisy_torch) + tv_weight*tv(out)/NumPix
