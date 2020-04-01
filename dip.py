@@ -132,7 +132,7 @@ class DIP:
         elif LOSS == 'avg_mse_tv':
             pn_np = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
             global pn, alpha, beta
-            pn = (1-pn_np/25)
+            pn = (1-pn_np/30)
             alpha_tensor = torch.log(mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(0.1*tv(out.detach())/NumPix).type(torch.FloatTensor))
             alpha = alpha_tensor.detach().cpu().numpy()[0]
             beta = math.log(max(3000.0-i,100.0), 3000.0)
@@ -186,7 +186,10 @@ class DIP:
 
         # Note that we do not have GT for the "snail" example
         # So 'PSRN_gt', 'PSNR_gt_sm' make no sense
-        print ('Iteration %05d    pn %f   alpha: %f   alpha: %f    Loss %f   PSNR_noisy: %f   PSRN_gt: %f PSNR_gt_sm: %f' % (i, pn, alpha, beta, total_loss.item(), psrn_noisy, psrn_gt, psrn_gt_sm), '\r', end='')
+        if LOSS == 'avg_mse_tv':
+            print ('Iteration %05d    pn %f   alpha: %f   beta: %f    Loss %f   PSNR_noisy: %f   PSRN_gt: %f PSNR_gt_sm: %f' % (i, pn, alpha, beta, total_loss.item(), psrn_noisy, psrn_gt, psrn_gt_sm), '\r', end='')
+        else:
+            print ('Iteration %05d    Loss %f   PSNR_noisy: %f   PSRN_gt: %f PSNR_gt_sm: %f' % (i, total_loss.item(), psrn_noisy, psrn_gt, psrn_gt_sm), '\r', end='')
         
 
         writer.add_scalars(logdir,{LOSS_write+'total_loss'+current_time:total_loss.item(),LOSS_write+'psrn_noisy'+current_time:psrn_noisy,LOSS_write+'psrn_gt'+current_time:psrn_gt,LOSS_write+'psrn_gt_sm'+current_time:psrn_gt_sm}, i)    
