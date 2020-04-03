@@ -134,14 +134,14 @@ class DIP:
         elif LOSS == 'avg_mse_tv':
             pn_np = compare_psnr(img_noisy_np, out.detach().cpu().numpy()[0])
             global pn, alpha, beta
-            pn = (M-pn_np)/pn_np
+            pn = (M-pn_np)/M
             alpha_tensor = torch.log(mse(out.detach(), img_noisy_torch).type(torch.FloatTensor)/(0.1*tv(out.detach())/NumPix).type(torch.FloatTensor))
             #alpha = alpha_tensor.detach().cpu().numpy()[0]
             alpha = math.log(mse(out.detach(), img_noisy_torch)/(0.1*tv(out.detach())/NumPix),2)
             if i<2900:
                 beta = math.log(max(3000.0-i,100.0), 3000.0)
-            elif i< 3000:
-                beta = math.log(100,3000)-3e-3*(i-2900)
+            elif i< 3900:
+                beta = math.log(100,3000)-3e-4*(i-2900)
             else:
                 beta = math.log(100,3000)-0.3
             #alpha = max(alpha,1-pn)
